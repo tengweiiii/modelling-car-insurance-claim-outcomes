@@ -23,6 +23,7 @@ car_insurance.head()
 * `head()` displays the first five rows so we can understand the structure.
 
 ## 1.3 Inspect the dataset
+### Check the number of rows and columns
 ```
 # Check the number of rows and columns
 car_insurance.shape
@@ -32,6 +33,7 @@ Output:
 (10000, 18)
 ```
 
+### Check column names and data types
 ```
 # Check column names and data types
 car_insurance.info()
@@ -65,6 +67,7 @@ dtypes: float64(6), int64(7), object(5)
 memory usage: 1.4+ MB
 ```
 
+### Check the statistical summaries
 ```
 # Check the statistical summaries
 car_insurance.describe()
@@ -83,8 +86,9 @@ Output:
 | max | 999976 | 3 | 1 | 0.9608188278 | 1 | 1 | 1 | 92101 | 22000 | 22 | 6 | 15 | 1 |
 ```
 
+### Check missing values
 ```
-# Check mising values
+# Check missing values
 car_insurance.isnull().sum()
 ```
 Output: 
