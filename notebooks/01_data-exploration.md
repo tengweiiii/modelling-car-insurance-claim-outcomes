@@ -73,7 +73,6 @@ memory usage: 1.4+ MB
 car_insurance.describe()
 ```
 Output: 
-```
 | Statistic | index | id | age | gender | credit_score | vehicle_ownership | married | children | postal_code | annual_mileage | speeding_violations | duis | past_accidents | outcome |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | count | 10000 | 10000 | 10000 | 9018 | 10000 | 10000 | 10000 | 10000 | 9043 | 10000 | 10000 | 10000 | 10000 | 10000 |
@@ -84,7 +83,6 @@ Output:
 | 50% | 501777 | 1 | 0 | 0.5250327586 | 1 | 0 | 1 | 10238 | 12000 | 0 | 0 | 0 | 0 |
 | 75% | 753974.5 | 2 | 1 | 0.6183116647 | 1 | 1 | 1 | 32765 | 14000 | 2 | 0 | 2 | 1 |
 | max | 999976 | 3 | 1 | 0.9608188278 | 1 | 1 | 1 | 92101 | 22000 | 22 | 6 | 15 | 1 |
-```
 
 ### Check missing values
 ```
@@ -92,7 +90,6 @@ Output:
 car_insurance.isnull().sum()
 ```
 Output: 
-```
 | Column               | Missing Values |
 |----------------------|---------------:|
 | index                | 0              |
@@ -114,4 +111,3 @@ Output:
 | duis                 | 0              |
 | past_accidents       | 0              |
 | outcome              | 0              |
-```
