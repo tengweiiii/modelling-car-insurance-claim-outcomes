@@ -73,8 +73,8 @@ memory usage: 1.4+ MB
 car_insurance.describe()
 ```
 Output: 
-| Statistic | index | id | age | gender | credit_score | vehicle_ownership | married | children | postal_code | annual_mileage | speeding_violations | duis | past_accidents | outcome |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| index | id | age | gender | credit_score | vehicle_ownership | married | children | postal_code | annual_mileage | speeding_violations | duis | past_accidents | outcome |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | count | 10000 | 10000 | 10000 | 9018 | 10000 | 10000 | 10000 | 10000 | 9043 | 10000 | 10000 | 10000 | 10000 | 10000 |
 | mean | 500521.9068 | 1.4895 | 0.499 | 0.5158128096 | 0.697 | 0.4982 | 0.6888 | 19864.5484 | 11697.0032069004 | 1.4829 | 0.2392 | 1.0563 | 0.3133 |
 | std | 290030.7687578594 | 1.0252779474 | 0.5000240018 | 0.1376880893 | 0.4595781992 | 0.5000217618 | 0.4630075567 | 18915.6138547288 | 2818.4345283018 | 2.2419657069 | 0.5549902354 | 1.6524537423 | 0.4638584121 |
@@ -111,3 +111,37 @@ Output:
 | duis                 | 0              |
 | past_accidents       | 0              |
 | outcome              | 0              |
+
+### Inspect categorical variables
+```
+# Categorize all columns including categorical features
+car_insurance.describe(include='all')
+```
+Output: 
+| index | id | age | gender | driving_experience | education | income | credit_score | vehicle_ownership | vehicle_year | married | children | postal_code | annual_mileage | vehicle_type | speeding_violations | duis | past_accidents | outcome |
+|---:|---:|---:|---|---|---|---|---:|---:|---|---:|---:|---:|---:|---|---:|---:|---:|---:|
+| count | 10000 | 10000 | 10000 | 10000 | 10000 | 10000 | 10000 | 9018 | 10000 | 10000 | 10000 | 10000 | 10000 | 9043 | 10000 | 10000 | 10000 | 10000 | 10000 |
+| unique | | | | 4 | 3 | 4 | | | 2 | | | | | 2 | | | | | |
+| top | | | | 0-9y | high school | upper class | | | before 2015 | | | | | sedan | | | | | |
+| freq | | | | 3530 | 4157 | 4336 | | | 6967 | | | | | 9523 | | | | | |
+| mean | 500521.9068 | 1.4895 | 0.499 | null | null | null | 0.5158128096 | 0.697 | null | 0.4982 | 0.6888 | 19864.5484 | 11697.0032069004 | null | 1.4829 | 0.2392 | 1.0563 | 0.3133 |
+| std | 290030.7687578594 | 1.0252779474 | 0.5000240018 | null | null | null | 0.1376880893 | 0.4595781992 | null | 0.5000217618 | 0.4630075567 | 18915.6138547288 | 2818.4345283018 | null | 2.2419657069 | 0.5549902354 | 1.6524537423 | 0.4638584121 |
+| min | 101 | 0 | 0 | null | null | null | 0.0533575455 | 0 | null | 0 | 0 | 10238 | 2000 | null | 0 | 0 | 0 | 0 |
+| 25% | 249638.5 | 1 | 0 | null | null | null | 0.4171913163 | 0 | null | 0 | 0 | 10238 | 10000 | null | 0 | 0 | 0 | 0 |
+| 50% | 501777 | 1 | 0 | null | null | null | 0.5250327586 | 1 | null | 0 | 1 | 10238 | 12000 | null | 0 | 0 | 0 | 0 |
+| 75% | 753974.5 | 2 | 1 | null | null | null | 0.6183116647 | 1 | null | 1 | 1 | 32765 | 14000 | null | 2 | 0 | 2 | 1 |
+| max | 999976 | 3 | 1 | null | null | null | 0.9608188278 | 1 | null | 1 | 1 | 92101 | 22000 | null | 22 | 6 | 15 | 1 |
+
+### Inspect the target variable distribution
+```
+# Count the number of customers in each outcome class
+car_insurance['outcome'].value_counts()
+
+# Calculate the percentage distribution
+car_insurance['outcome'].value_counts(normalize=True) * 100
+```
+Output:
+|index	| outcome|
+| ----- | ----- |
+|0	| 68.67|
+|1	| 31.33|
