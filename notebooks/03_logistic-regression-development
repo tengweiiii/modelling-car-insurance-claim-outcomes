@@ -1,0 +1,383 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# 3.0 Build Individual Logistic Regression Models\n",
+        "\n",
+        "**Objective:** Determine which single feature produces the highest prediction accuracy.\n",
+        "\n",
+        "We will build 16 separate Logistic Regression models. Each model uses:\n",
+        "- One independent variable (predictor)\n",
+        "- One dependent variable (target: `outcome`)\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 3.1 Understand the Modelling Approach\n",
+        "\n",
+        "Each model uses one feature to predict the insurance claim outcome.\n",
+        "\n",
+        "**Examples**\n",
+        "\n",
+        "**Model 1**\n",
+        "\\[\n",
+        "outcome = f(age)\n",
+        "\\]\n",
+        "\n",
+        "**Model 2**\n",
+        "\\[\n",
+        "outcome = f(gender)\n",
+        "\\]\n",
+        "\n",
+        "**Model 3**\n",
+        "\\[\n",
+        "outcome = f(driving\\_experience)\n",
+        "\\]\n",
+        "\n",
+        "We will use the `logit()` function from Statsmodels.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 3.2 Understand the Logistic Regression Formula\n",
+        "\n",
+        "```python\n",
+        "logit('outcome ~ age', data=car_insurance_clean)\n",
+        "```\n",
+        "\n",
+        "| Component | Meaning |\n",
+        "|---|---|\n",
+        "| `outcome` | Dependent variable (what we predict) |\n",
+        "| `~` | Explained by |\n",
+        "| `age` | Independent variable (predictor) |\n",
+        "| `data` | Dataset used for modelling |\n",
+        "\n",
+        "In simple terms, we are asking:\n",
+        "\n",
+        "**Can a customer's age predict whether they will make an insurance claim?**\n",
+        "\n",
+        "For categorical variables, use `C()` to explicitly tell Statsmodels to treat the feature as categorical:\n",
+        "\n",
+        "```python\n",
+        "logit('outcome ~ C(vehicle_type)', data=car_insurance_clean)\n",
+        "```\n",
+        "\n",
+        "This is useful when a feature contains text categories such as `sedan` and `sports car`.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 3.3 Build a Logistic Regression Model for Each Feature\n",
+        "\n",
+        "Instead of manually creating 16 models, we can use a `for` loop.\n",
+        "\n",
+        "The process is:\n",
+        "\n",
+        "1. Loop through every feature in `features`.\n",
+        "2. Construct a Logistic Regression formula.\n",
+        "3. Fit the model using the dataset.\n",
+        "4. Generate predicted probabilities.\n",
+        "5. Convert probabilities into binary predictions.\n",
+        "6. Calculate the accuracy score.\n",
+        "7. Store the results for comparison.\n",
+        "\n",
+        "### Prerequisites\n",
+        "\n",
+        "This notebook expects `car_insurance_clean` to be the cleaned dataset and `features` to contain the 16 predictor column names. The target column, `outcome`, should be binary (0/1).\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 3.3.1 Import the Required Libraries\n",
+        "\n",
+        "If you have already imported these libraries in an earlier notebook, this cell can be skipped.\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "import pandas as pd\n",
+        "from statsmodels.formula.api import logit\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 3.3.2 Define the Features\n",
+        "\n",
+        "The following list follows the 16 features in this exercise. Make sure the names match the columns in `car_insurance_clean`.\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "features = [\n",
+        "    'age',\n",
+        "    'gender',\n",
+        "    'driving_experience',\n",
+        "    'education',\n",
+        "    'income',\n",
+        "    'credit_score',\n",
+        "    'vehicle_ownership',\n",
+        "    'vehicle_year',\n",
+        "    'married',\n",
+        "    'children',\n",
+        "    'postal_code',\n",
+        "    'annual_mileage',\n",
+        "    'vehicle_type',\n",
+        "    'speeding_violations',\n",
+        "    'duis',\n",
+        "    'past_accidents'\n",
+        "]\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 3.3.3 Create an Empty Dictionary\n",
+        "\n",
+        "We need somewhere to store the accuracy of each model.\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "# Create an empty dictionary to store model accuracy\n",
+        "accuracies = {}\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### 3.3.4 Train Individual Models\n",
+        "\n",
+        "The loop trains one Logistic Regression model for each feature and stores its training accuracy.\n",
+        "\n",
+        "> **Categorical variables:** If a feature is stored as text categories, wrap it in `C()` in the formula (for example, `outcome ~ C(vehicle_type)`). The code below follows the direct formula approach used for the reported results.\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "# Loop through each candidate feature\n",
+        "for feature in features:\n",
+        "\n",
+        "    # Create the Logistic Regression formula\n",
+        "    formula = f'outcome ~ {feature}'\n",
+        "\n",
+        "    # Fit the Logistic Regression model\n",
+        "    model = logit(formula, data=car_insurance_clean).fit()\n",
+        "\n",
+        "    # Generate predicted probabilities\n",
+        "    predictions = model.predict(car_insurance_clean)\n",
+        "\n",
+        "    # Convert probabilities into binary predictions\n",
+        "    predicted_classes = (predictions >= 0.5).astype(int)\n",
+        "\n",
+        "    # Calculate accuracy\n",
+        "    accuracy = (predicted_classes == car_insurance_clean['outcome']).mean()\n",
+        "\n",
+        "    # Store the accuracy\n",
+        "    accuracies[feature] = accuracy\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Understanding the Important Code\n",
+        "\n",
+        "**1. Constructing the formula**\n",
+        "\n",
+        "```python\n",
+        "formula = f'outcome ~ {feature}'\n",
+        "```\n",
+        "\n",
+        "The f-string dynamically inserts each feature into the formula.\n",
+        "\n",
+        "- First iteration: `outcome ~ age`\n",
+        "- Second iteration: `outcome ~ gender`\n",
+        "- Third iteration: `outcome ~ driving_experience`\n",
+        "\n",
+        "**2. Generating predictions**\n",
+        "\n",
+        "```python\n",
+        "predictions = model.predict(car_insurance_clean)\n",
+        "```\n",
+        "\n",
+        "Logistic Regression returns predicted probabilities between 0 and 1.\n",
+        "\n",
+        "**3. Converting probabilities into classes**\n",
+        "\n",
+        "```python\n",
+        "predicted_classes = (predictions >= 0.5).astype(int)\n",
+        "```\n",
+        "\n",
+        "We use 0.5 as the classification threshold.\n",
+        "\n",
+        "| Probability | Predicted Class |\n",
+        "|---:|---:|\n",
+        "| 0.85 | 1 |\n",
+        "| 0.25 | 0 |\n",
+        "| 0.63 | 1 |\n",
+        "\n",
+        "**4. Calculating accuracy**\n",
+        "\n",
+        "```python\n",
+        "accuracy = (predicted_classes == car_insurance_clean['outcome']).mean()\n",
+        "```\n",
+        "\n",
+        "Accuracy measures the proportion of correct predictions.\n",
+        "\n",
+        "\\[\n",
+        "\\text{Accuracy} = \\frac{\\text{Correct Predictions}}{\\text{Total Predictions}}\n",
+        "\\]\n",
+        "\n",
+        "For example, if the model correctly predicts 8,000 out of 10,000 customers:\n",
+        "\n",
+        "\\[\n",
+        "\\text{Accuracy} = \\frac{8000}{10000} = 0.80\n",
+        "\\]\n",
+        "\n",
+        "This means the model correctly predicts **80% of the customers**.\n",
+        "\n",
+        "**5. Storing the accuracy**\n",
+        "\n",
+        "```python\n",
+        "accuracies[feature] = accuracy\n",
+        "```\n",
+        "\n",
+        "This stores each feature and its corresponding accuracy in the dictionary.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 3.4 Compare the Model Accuracy\n",
+        "\n",
+        "Once all 16 models have been trained, convert the dictionary into a DataFrame and sort the results by accuracy in descending order.\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "# Convert the accuracy dictionary into a DataFrame\n",
+        "accuracy_df = pd.DataFrame(\n",
+        "    list(accuracies.items()),\n",
+        "    columns=['features', 'accuracy']\n",
+        ")\n",
+        "\n",
+        "# Sort models by accuracy in descending order\n",
+        "accuracy_df = accuracy_df.sort_values(\n",
+        "    by='accuracy',\n",
+        "    ascending=False\n",
+        ").reset_index(drop=True)\n",
+        "\n",
+        "# Display the results\n",
+        "accuracy_df\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Reported Results\n",
+        "\n",
+        "The following table shows the results from the exercise.\n",
+        "\n",
+        "| Rank | Feature | Accuracy |\n",
+        "|---:|---|---:|\n",
+        "| 1 | driving_experience | 0.7771 |\n",
+        "| 2 | age | 0.7747 |\n",
+        "| 3 | income | 0.7425 |\n",
+        "| 4 | vehicle_ownership | 0.7351 |\n",
+        "| 5 | credit_score | 0.7053 |\n",
+        "| 6 | annual_mileage | 0.6904 |\n",
+        "| 7 | gender | 0.6867 |\n",
+        "| 8 | education | 0.6867 |\n",
+        "| 9 | vehicle_year | 0.6867 |\n",
+        "| 10 | married | 0.6867 |\n",
+        "| 11 | children | 0.6867 |\n",
+        "| 12 | postal_code | 0.6867 |\n",
+        "| 13 | vehicle_type | 0.6867 |\n",
+        "| 14 | speeding_violations | 0.6867 |\n",
+        "| 15 | duis | 0.6867 |\n",
+        "| 16 | past_accidents | 0.6867 |\n",
+        "\n",
+        "The displayed table is the reported output from the exercise; running the notebook on a different dataset or with different preprocessing may produce different values.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Important Modelling Consideration\n",
+        "\n",
+        "In the code above, we train and evaluate each model using the same 10,000 records.\n",
+        "\n",
+        "This measures **training accuracy**, not how well the model generalizes to unseen customers.\n",
+        "\n",
+        "For this exercise, we are following the straightforward approach to identify the highest-accuracy feature. In a real production project, we should use a **train-test split** or **cross-validation** to obtain a more reliable performance estimate.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## 3.5 Interpretation of Logistic Regression Modelling\n",
+        "\n",
+        "A total of 16 individual Logistic Regression models were trained, with each model using one feature to predict the insurance claim outcome (`outcome`). Predicted probabilities were converted into binary classes using a classification threshold of 0.5, and the accuracy of each model was calculated to evaluate its predictive performance.\n",
+        "\n",
+        "The results showed that `driving_experience` achieved the highest accuracy of **77.71%**, followed closely by `age` at **77.47%**. This indicates that driving experience and age provide the strongest predictive performance among the individual features.\n",
+        "\n",
+        "On the other hand, several features achieved an accuracy of **68.67%**, which was equivalent to the majority-class baseline. This suggests that these features did not improve prediction accuracy when used individually.\n",
+        "\n",
+        "Overall, the modelling process allows us to compare the predictive performance of each feature and identify `driving_experience` as the best-performing single feature for predicting car insurance claim outcomes.\n",
+        "\n",
+        "**Key takeaway:** By training and evaluating individual Logistic Regression models, we identified `driving_experience` as the best-performing feature, with an accuracy of **77.71%**.\n"
+      ]
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python",
+      "version": "3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
