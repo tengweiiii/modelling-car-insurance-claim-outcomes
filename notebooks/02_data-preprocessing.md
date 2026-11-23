@@ -1,4 +1,4 @@
-# 2.0 Data Prepocessing
+# 2.0 Data Preprocessing
 Before training models, we need to handle the missing values.
 
 ## 2.1 Create a working copy
