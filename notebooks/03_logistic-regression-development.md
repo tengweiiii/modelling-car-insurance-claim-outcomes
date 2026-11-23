@@ -92,7 +92,7 @@ for feature in features:
   predictions = model.predict(car_insurance_clean)
 
   # Convert probabilities into binary predictions
-  predicted_classes = (prediction >= 0.5).astype(int)
+  predicted_classes = (predictions >= 0.5).astype(int)
 
   # Calculate accuracy
   accuracy = (predicted_classes == car_insurance_clean['outcome']).mean()
@@ -155,3 +155,102 @@ for feature in features:
    accuracies[feature] = accuracy
    ```
    This stores each feature and its corresponding accuracy in our dictionary.
+
+Output:
+```
+Optimization terminated successfully.
+         Current function value: 0.511794
+         Iterations 6
+Optimization terminated successfully.
+         Current function value: 0.615951
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.467092
+         Iterations 8
+Optimization terminated successfully.
+         Current function value: 0.603742
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.531499
+         Iterations 6
+Optimization terminated successfully.
+         Current function value: 0.572649
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.552412
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.572668
+         Iterations 6
+Optimization terminated successfully.
+         Current function value: 0.586659
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.595431
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.617345
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.605605
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.621700
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.558922
+         Iterations 7
+Optimization terminated successfully.
+         Current function value: 0.598699
+         Iterations 6
+Optimization terminated successfully.
+         Current function value: 0.549220
+         Iterations 7
+```
+
+## 3.4 Compare the model accuracy
+Once all 16 models have been trained, let's convert our dictionary into a DataFrame.
+```
+# Convert accuracy dictoniary into a DataFrame
+accuracy_df = pd.DataFrame(
+  list(accuracies.items()),
+  columns=['features', 'accuracy']
+)
+
+# Sort models by accuracy in descending order
+accuracy_df = accuracy_df.sort_values(
+  by='accuracy',
+  ascending=False
+)
+
+# Display the results
+accuracy_df
+```
+Output:
+| index | features            | accuracy |
+|------:|---------------------|---------:|
+| 2     | driving_experience  | 0.7771   |
+| 0     | age                 | 0.7747   |
+| 4     | income              | 0.7425   |
+| 6     | vehicle_ownership   | 0.7351   |
+| 5     | credit_score        | 0.7053   |
+| 11    | annual_mileage      | 0.6904   |
+| 1     | gender              | 0.6867   |
+| 3     | education           | 0.6867   |
+| 7     | vehicle_year        | 0.6867   |
+| 8     | married             | 0.6867   |
+| 9     | children            | 0.6867   |
+| 10    | postal_code         | 0.6867   |
+| 12    | vehicle_type        | 0.6867   |
+| 13    | speeding_violations | 0.6867   |
+| 14    | duis                | 0.6867   |
+| 15    | past_accidents      | 0.6867   |
+
+## 3.5 Important modelling consideration
+In the code above, we train and evaluate each model using the same 10,000 records.
+
+This measures training accuracy, not how well the model generalizes to unseen customers.
+
+For this exercise, we are following the straightforward approach to identify the highest-accuracy feature. 
+
+In a real production project, we should use a train-test split or cross-validation to obtain a more reliable performance estimate.
