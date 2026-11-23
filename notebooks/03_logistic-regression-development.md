@@ -246,7 +246,7 @@ Output:
 | 14    | duis                | 0.6867   |
 | 15    | past_accidents      | 0.6867   |
 
-## 3.5 Important modelling consideration
+## Important modelling consideration
 In the code above, we train and evaluate each model using the same 10,000 records.
 
 This measures training accuracy, not how well the model generalizes to unseen customers.
@@ -254,3 +254,14 @@ This measures training accuracy, not how well the model generalizes to unseen cu
 For this exercise, we are following the straightforward approach to identify the highest-accuracy feature. 
 
 In a real production project, we should use a train-test split or cross-validation to obtain a more reliable performance estimate.
+
+## 3.5 Interpretation of Logistic Regression Modelling
+A total of 16 individual Logistic Regression models were trained, with each model using one feature to predict the insurance claim outcome (`outcome`). Predicted probabilities were converted into binary classes using a classification threshold of 0.5, and the accuracy of each model was calculated to evaluate its predictive performance.
+
+The results showed that `driving_experience` achieved the highest accuracy of 77.71%, followed closely by `age` at 77.47%. This indicates that **driving experience** and **age** provide the strongest predictive performance among the individual features.
+
+On the other hand, several features achieved an accuracy of 68.67%, which was equivalent to the majority-class baseline. This suggests that these features did not improve prediction accuracy when used individually.
+
+Overall, the modelling process allows us to compare the predictive performance of each feature and identify `driving_experience` as the most suitable single feature for predicting car insurance claim outcomes.
+
+**Key takeaway**: By training and evaluating individual Logistic Regression models, we identified `driving_experience` as the best-performing feature, with an accuracy of 77.71%.
