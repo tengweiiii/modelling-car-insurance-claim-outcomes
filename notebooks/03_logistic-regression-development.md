@@ -132,17 +132,19 @@ for feature in features:
    ```
    accuracy = (predicted_classes == car_insurance_clean['outcome']).mean()
    ```
-   Accuracy measures the proportion of correct predictions.
-   \[
-   Accuracy = \frac{\text{Correct Predictions}}{\text{Total Predictions}}
-   \]
+  Accuracy measures the proportion of predictions that the model gets correct out of all predictions.
   
-   For example, if the model correctly predicts 8,000 out of 10,000 customers:
-   \[
-   Accuracy = \frac{8000}{10000}=0.80
-   \]
+  **Formula:**
   
-   The model has an accuracy of 80%.
+  \\[ Accuracy = \frac{\text{Correct Predictions}}{\text{Total Predictions}} \\]
+  
+  **Example:**
+  
+  If the model correctly predicts 8,000 out of 10,000 customers:
+  
+  \\[ Accuracy = \frac{8000}{10000}=0.80=80\\% \\]
+  
+  This means the model correctly predicts **80% of the customers**.
    
 **6. Store the accuracy**
    ```
