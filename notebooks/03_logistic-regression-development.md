@@ -7,19 +7,19 @@ We will build 16 separate Logistic Regression models.
 For example:
 
 **Model 1:**
-\[
+$$
 outcome = f(age)
-\]
+$$
 
 **Model 2:**
-\[
+$$
 outcome = f(gender)
-\]
+$$
 
 **Model 3:**
-\[
+$$
 outcome = f(driving\_experience)
-\]
+$$
 
 Each model uses:
 * One independent variable (predictor)
@@ -132,17 +132,17 @@ for feature in features:
    ```
    accuracy = (predicted_classes == car_insurance_clean['outcome']).mean()
    ```
-  Accuracy measures the proportion of predictions that the model gets correct out of all predictions.
+   Accuracy measures the proportion of correct predictions.
   
-  **Formula:**
+   $$
+   \text{Accuracy} = \frac{\text{Correct Predictions}}{\text{Total Predictions}}
+   $$
   
-  \\[ Accuracy = \frac{\text{Correct Predictions}}{\text{Total Predictions}} \\]
+   For example, if the model correctly predicts 8,000 out of 10,000 customers:
   
-  **Example:**
-  
-  If the model correctly predicts 8,000 out of 10,000 customers:
-  
-  \\[ Accuracy = \frac{8000}{10000}=0.80=80\\% \\]
+   $$
+   \text{Accuracy} = \frac{8000}{10000} = 0.80
+   $$
   
   This means the model correctly predicts **80% of the customers**.
    
