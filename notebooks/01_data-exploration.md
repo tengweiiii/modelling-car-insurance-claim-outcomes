@@ -145,3 +145,74 @@ Output:
 | ----- | ----- |
 |0	| 68.67|
 |1	| 31.33|
+
+## 1.4 Interpret the data exploration
+### Dataset Overview
+The dataset contains 10,000 customer records and 18 columns.
+
+### Missing values
+There two columns containing missing values.
+| Feature	| Missing	| Percentage |
+| ----- | ----- | ----- |
+| credit_score |	982	| 9.82% |
+| annual_mileage |	957	| 9.57% |
+
+This is important because **Logistic Regression cannot directly handle missing values**.
+
+However, we should not immediately remove all rows containing missing values.
+
+Why?
+* Removing rows can reduce our dataset size.
+* We would lose useful customer information.
+* Imputation can preserve more observations.
+
+We can investigate median imputation for numerical features.
+
+### Categorical variables
+There are five columns with the `objects` data type:
+
+| Feature             | Unique Values | Example       |
+|---------------------|--------------:|---------------|
+| driving_experience  | 4             | 0-9y          |
+| education           | 3             | high school   |
+| income              | 4             | upper class   |
+| vehicle_year        | 2             | before 2015   |
+| vehicle_type        | 2             | sedan         |
+
+These are categorical variables.
+
+Even though some categories have a natural order, we should not automatically treat their text labels as numerical values.
+
+For Logistic Regression, categorical variables need to be represented appropriately, commonly through one-hot encoding.
+
+> **Important**: The `statsmodels` formula interface that we will use can handle categorical variables with `C()`.
+
+### Target variable distribution
+**Insurance claim distribution**
+| 	| Total	| Percentage |
+| ----- | ----- | ----- |
+| No claim (0) |	6,867	| 68.67% |
+| Claim (1) |	3,133	| 31.33% |
+
+This tells us that the target variable is somewhat imbalanced.
+
+Approximately 69% of customers did not make a claim, while 31% did.
+
+**Why does this matter?**
+
+Imagine a model that predicts 0 for every customer.
+
+Its accuracy would already be 68.67%.
+
+Therefore, a model achieving 70% accuracy might not necessarily be very useful.
+
+For this project, we still need to use accuracy because that is the specified evaluation metric. However, we should remember this baseline when interpreting our results.
+
+### Important observations before modelling
+There are two additional things worth highlighting.
+
+1. **The dataset contains `gender`, even though it is missing from the supplied column description.**
+   Since the Python requirement says to exclude only id, we should include gender as a candidate predictor.
+
+3. **We should not remove categorical features just because they have the `object` data type.**
+   The `logit()` function from Statsmodels uses Patsy formulas, which can automatically encode string categorical variables.
