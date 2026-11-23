@@ -7,16 +7,19 @@ We will build 16 separate Logistic Regression models.
 For example:
 
 **Model 1:**
+
 $$
 outcome = f(age)
 $$
 
 **Model 2:**
+
 $$
 outcome = f(gender)
 $$
 
 **Model 3:**
+
 $$
 outcome = f(driving\_experience)
 $$
