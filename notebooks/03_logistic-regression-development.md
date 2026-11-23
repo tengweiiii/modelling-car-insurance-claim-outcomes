@@ -253,7 +253,7 @@ This measures training accuracy, not how well the model generalizes to unseen cu
 
 For this exercise, we are following the straightforward approach to identify the highest-accuracy feature. 
 
-In a real production project, we should use a train-test split or cross-validation to obtain a more reliable performance estimate.
+In a real production project, we should use a **train-test split** or **cross-validation** to obtain a more reliable performance estimate.
 
 ## 3.5 Interpretation of Logistic Regression Modelling
 A total of 16 individual Logistic Regression models were trained, with each model using one feature to predict the insurance claim outcome (`outcome`). Predicted probabilities were converted into binary classes using a classification threshold of 0.5, and the accuracy of each model was calculated to evaluate its predictive performance.
