@@ -93,7 +93,7 @@ Output:
 Number of features:  16
 ```
 
-## Interpretation of Data Preprocessing
+## 2.5 Interpret the Data Preprocessing
 The data preprocessing stage focused on preparing the dataset for Logistic Regression modelling.
 
 The original dataset contained 10,000 customer records, with missing values found in two numerical features: `credit_score` (982 missing values) and `annual_mileage` (957 missing values). These missing values were replaced using the median of their respective columns to retain all customer records while reducing the influence of extreme values.
