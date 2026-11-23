@@ -7,9 +7,9 @@ from statsmodels.formula.api import logit
 ```
 | Library	| Purpose |
 | -------- | -------- |
-| pandas	| Data manipulation and analysis|
-| numpy	| Numerical operations|
-| logit	| Build Logistic Regression models using statistical formulas|
+| `pandas`	| Data manipulation and analysis|
+| `numpy`	| Numerical operations|
+| `logit`	| Build Logistic Regression models using statistical formulas|
 
 ## 1.2 Load the dataset
 ```
