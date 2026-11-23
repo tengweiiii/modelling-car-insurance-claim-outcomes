@@ -106,9 +106,10 @@ for feature in features:
    ```
    formula = f'outcome ~ {feature}'
    ```
+
    The f-string allows us to dynamically insert each feature into the formula.
 
-    For example:
+   For example:
     * First iteration: `outcome ~ age`
     * Second iteration: `outcome ~ gender`
     * Third iteration: `outcome ~ driving_experience`
