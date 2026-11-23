@@ -1,5 +1,5 @@
 # 4.0 Model Evaluation and Comparison
-## 4.2 Compare model accuracy
+## 4.1 Compare model accuracy
 The results show that `driving_experience` achieved the highest accuracy, followed closely by `age`.
 
 **Key Observation**
